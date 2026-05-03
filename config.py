@@ -20,7 +20,7 @@ class Config:
     # -------------------------
 
     # size of bottleneck latent vector. Smaller size, compress more
-    latent_dim = 32
+    latent_size = 32
 
     # -------------------------
     # Training
