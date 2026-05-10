@@ -31,9 +31,8 @@ def main():
         )
     )
 
-    criterion = torch.nn.MSELoss(reduction='none')
-
     model.eval()
+    criterion = torch.nn.MSELoss(reduction='none')
 
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -61,10 +60,12 @@ def main():
 
     test_loader = DataLoader(test_set, batch_size=cfg.batch_size, shuffle=False)
 
+    print(f"Device: {device}")
+    print(f"Normal class: {cfg.normal_digit_class}")
+    print(f"Starting the evaluation...\n")
 
-
+    # compute reconstruction errors on normal images to find threshold
     losses = []
-
     with torch.no_grad():
         for images, _ in tqdm(val_loader):
             images = images.to(device)
@@ -73,8 +74,10 @@ def main():
             score = loss.mean(dim=[1, 2, 3])
             losses.extend(score.cpu().numpy())
 
+    # compute threshold from normal reconstruction errors
     threshold = np.percentile(losses, 95)
 
+    # evaluate on full test set
     labels = []
     all_scores = []
     with torch.no_grad():
@@ -89,15 +92,13 @@ def main():
             labels.extend(binary_labels.numpy())
 
     auc = roc_auc_score(labels, all_scores)
-    predictions = (np.array(all_scores) > threshold).astype("int")
+    predictions = (np.array(all_scores) > threshold).astype(int)
     f1 = f1_score(labels, predictions)
 
     print(f"\nEvaluation Results:")
     print(f"Threshold:  {threshold:.4f}")
     print(f"AUC:        {auc:.4f}")
     print(f"F1 Score:   {f1:.4f}")
-
-
 
 
 if __name__ == "__main__":
