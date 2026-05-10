@@ -27,7 +27,7 @@ class Config:
     # -------------------------
 
     # number of full processes over training dataset
-    num_epochs = 100
+    num_epochs = 30
 
     # number of samples in each training step
     batch_size = 32
