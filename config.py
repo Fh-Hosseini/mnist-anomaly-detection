@@ -8,6 +8,9 @@ class Config:
 
     # the digit class treat as "normal" case during training
     normal_digit_class = 1
+    anomaly_class = 3
+
+    threshold = 0.0019
 
     # MNIST data images size are 28*28
     image_size = 28
