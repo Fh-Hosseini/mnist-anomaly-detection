@@ -15,6 +15,8 @@ Train a model exclusively on one digit class (e.g. digit "1") and detect all oth
 mnist-anomaly-detection/
 ├── models/
 │   └── autoencoder.py       # CAE architecture
+├── tests/
+│   └── test_autoencoder.py  # Shape validation tests
 ├── train.py                 # Training on normal class only
 ├── evaluate.py              # Anomaly scoring and metrics
 ├── visualize.py             # Reconstruction error maps
@@ -47,8 +49,33 @@ python train.py
 python evaluate.py
 ```
 
+### 5. Visualize
+```bash
+python visualize.py
+```
+
 ## 📊 Results
-*Coming soon — will include AUC, F1, and reconstruction visualizations.*
+
+| Metric | Score |
+|--------|-------|
+| AUC    | 0.9988 |
+| F1     | 0.9939 |
+
+### Reconstructions
+Normal digits (top) reconstruct accurately. Anomalous digits (bottom) reconstruct poorly.
+
+![reconstructions](docs/reconstructions.png)
+
+### Error Maps
+Error maps show pixel-level reconstruction error. Normal images produce nearly black maps. Anomalous images produce bright, noisy maps.
+
+![error_maps](docs/error_maps.png)
+
+### Reconstruction Error Distribution
+Normal errors cluster near zero. Anomalous errors spread across higher values. The threshold separates the two distributions cleanly.
+
+![histogram](docs/error_histogram.png)
+
 
 ## 🔧 Requirements
 All dependencies are managed via `environment.yml`. Ensure you have **Conda** or **Miniconda** installed to set up the environment.
